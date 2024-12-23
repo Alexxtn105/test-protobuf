@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "test-protobuf/models";
+
+// перечисление с типом телефонного номера
+enum PhoneType{
+  MOBILE = 0;
+  HOME = 1;
+  WORK = 2;
+}
+
+// сообщения будут скомпилированы в двоичный формат protobuf
+message PhoneNumber{
+  string number = 1;
+  PhoneType type = 2;
+}
+
+message Person {
+  string name = 1;
+  int32 id = 2;
+  string email = 3;
+  repeated PhoneNumber phones = 4;
+}
