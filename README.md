@@ -47,7 +47,7 @@ curl -X POST --data-binary @tmp/person.bin http://localhost:8080/add
 ```
 В ответ должна прийти строка:
 ```
-Person added: name:"John Wick"  id:1234  email:"wick@codeheim.io"  phones:{number:"123-456-7891"}
+Person added: name:"John Doe"  id:1234  email:"johndoe@mail.ru"  phones:{number:"123-456-7891"}
 ```
 
 
