@@ -21,7 +21,47 @@ go get google.golang.org/protobuf@latest
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 ```
 
+## Кодогенерация
+
 Кодогенерация из proto-файла, результат будет в файле `./models/person.pb.go`:
 ```bash
 protoc --go_out=. --go_opt=paths=source_relative models/person.proto
+```
+
+## Проверка работоспособности
+
+Сперва маршалим объект, который пошлем на http-сервер:
+```bash
+go run person_marshall.go
+```
+В результате будет создан файл `./tmp/person.bin`
+
+Запуск сервера:
+```bash
+go run main.go
+```
+
+Отправка запроса на сервер (в командной строке bash):
+```bash
+curl -X POST --data-binary @tmp/person.bin http://localhost:8080/add
+```
+В ответ должна прийти строка:
+```
+Person added: name:"John Wick"  id:1234  email:"wick@codeheim.io"  phones:{number:"123-456-7891"}
+```
+
+
+Получение добавленных данных:
+```bash
+curl -X GET http://localhost:8080/get?id=1234 --output tmp/retrieved_person.bin
+```
+Результатом выполнения GET-запроса станет создание файла `./tmp/retrieved_person.bin`
+
+Для проверки полученного с сервера результат осуществим анмаршалинг принятого файла:
+```bash
+go run person_unmarshall.go
+```
+В результате должна быть строка:
+```
+Результат десериализации: name:"John Doe"  id:1234  email:"johndoe@mail.ru"  phones:{number:"123-456-7891"}
 ```
